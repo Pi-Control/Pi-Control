@@ -5,7 +5,7 @@ const router = Router();
 
 router.get('/', (req, res, next) =>  {
 
-  si.versions()
+  si.cpuCache()
       .then(data => {
         res.status(200).send(data);
         next();
