@@ -10,35 +10,51 @@ const schema = buildSchema(`
   scalar JSONObject
 
   type Query {
-    hello: String,
+    hello: String
     cpu: CPU
+    memory: Memory
   }
 
   type CPU {
-    manufacturer: String,
-    brand: String,
-    vendor: String,
-    family: String,
-    model: String,
-    stepping: String,
-    revision: String,
-    voltage: String,
-    speed: String,
-    speedmin: String,
-    speedmax: String,
-    governor: String,
-    cores: Int,
-    physicalCores: Int,
-    processors: Int,
-    socket: String,
+    manufacturer: String
+    brand: String
+    vendor: String
+    family: String
+    model: String
+    stepping: String
+    revision: String
+    voltage: String
+    speed: String
+    speedmin: String
+    speedmax: String
+    governor: String
+    cores: Int
+    physicalCores: Int
+    processors: Int
+    socket: String
     cache: JSONObject
+  }
 
+  type Memory {
+    total: Float
+    free: Float
+    used: Float
+    active: Float
+    available: Float
+    buffcache: Float
+    buffers: Float
+    cached: Float
+    slab: Float
+    swaptotal: Float
+    swapused: Float
+    swapfree: Float
   }
 `);
 
 const root = { 
   hello: () => 'Hello world!',
   cpu: si.cpu(),
+  memory: si.mem()
 };
 
 const app = express();
