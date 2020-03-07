@@ -8,15 +8,37 @@ import testRoute from "./routes/test";
 
 const schema = buildSchema(`
   scalar JSONObject
+
   type Query {
     hello: String,
-    cpu: JSONObject
+    cpu: CPU
+  }
+
+  type CPU {
+    manufacturer: String,
+    brand: String,
+    vendor: String,
+    family: String,
+    model: String,
+    stepping: String,
+    revision: String,
+    voltage: String,
+    speed: String,
+    speedmin: String,
+    speedmax: String,
+    governor: String,
+    cores: Int,
+    physicalCores: Int,
+    processors: Int,
+    socket: String,
+    cache: JSONObject
+
   }
 `);
 
 const root = { 
   hello: () => 'Hello world!',
-  cpu: si.cpuCache,
+  cpu: si.cpu(),
 };
 
 const app = express();
