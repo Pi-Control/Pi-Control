@@ -14,4 +14,4 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-app.listen(3000);
+app.listen(3000, () => console.log("Listening on http://localhost:3000"));
