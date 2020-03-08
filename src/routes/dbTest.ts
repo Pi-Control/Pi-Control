@@ -5,9 +5,9 @@ const router = Router();
 
 class User extends Model {}
 
-router.get('/', (req, res, next) => {
-  const sequelize = new Sequelize('sqlite::memory:');
+const sequelize = new Sequelize('sqlite::memory:');
 
+router.get('/', (req, res, next) => {
   User.init(
     {
       username: DataTypes.STRING,

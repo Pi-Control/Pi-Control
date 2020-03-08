@@ -4,7 +4,7 @@ import { json } from 'body-parser';
 import { graphql, buildSchema } from 'graphql';
 import si from 'systeminformation';
 
-import testRoute from './routes/test';
+import dbTestRoute from './routes/dbTest';
 
 const schema = buildSchema(`
   scalar JSONObject
@@ -52,7 +52,7 @@ const schema = buildSchema(`
 `);
 
 const root = {
-  hello: () => 'Hello world!',
+  hello: (): string => 'Hello world!',
   cpu: si.cpu(),
   memory: si.mem(),
 };
@@ -70,7 +70,7 @@ app.use(
   })
 );
 
-app.use('/test', testRoute);
+app.use('/db', dbTestRoute);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.log('Something bad happend :(', err);
