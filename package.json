@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon dist/app.js"
+    "start": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/app.ts"
   },
   "repository": {
     "type": "git",
@@ -38,8 +38,9 @@
     "eslint-config-airbnb-typescript": "^7.0.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-prettier": "^3.1.2",
+    "nodemon": "^2.0.2",
     "prettier": "^1.19.1",
-    "typescript": "^3.8.3",
-    "nodemon": "^2.0.2"
+    "ts-node": "^8.6.2",
+    "typescript": "^3.8.3"
   }
 }
