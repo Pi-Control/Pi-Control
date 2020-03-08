@@ -1,10 +1,10 @@
-import express, {Request, Response, NextFunction} from "express";
-import graphqlHTTP from "express-graphql";
-import { json } from "body-parser";
-import { graphql, buildSchema } from  'graphql';
+import express, { Request, Response, NextFunction } from 'express';
+import graphqlHTTP from 'express-graphql';
+import { json } from 'body-parser';
+import { graphql, buildSchema } from 'graphql';
 import si from 'systeminformation';
 
-import testRoute from "./routes/test";
+import testRoute from './routes/test';
 
 const schema = buildSchema(`
   scalar JSONObject
@@ -51,32 +51,34 @@ const schema = buildSchema(`
   }
 `);
 
-const root = { 
+const root = {
   hello: () => 'Hello world!',
   cpu: si.cpu(),
-  memory: si.mem()
+  memory: si.mem(),
 };
 
 const app = express();
 
 app.use(json());
 
-app.use('/graphql', graphqlHTTP({
-  schema,
-  rootValue: root,
-  graphiql: true,
-}));
+app.use(
+  '/graphql',
+  graphqlHTTP({
+    schema,
+    rootValue: root,
+    graphiql: true,
+  })
+);
 
-app.use("/test", testRoute);
-
+app.use('/test', testRoute);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.log("Something bad happend :(", err);
+  console.log('Something bad happend :(', err);
   next();
 });
 
-graphql(schema, '{ hello }', root).then((response) => {
+graphql(schema, '{ hello }', root).then(response => {
   console.log(response);
 });
 
-app.listen(3000, () => console.log("Listening on http://localhost:3000"));
+app.listen(3000, () => console.log('Listening on http://localhost:3000'));
