@@ -1,61 +1,11 @@
 import express, { Request, Response, NextFunction } from 'express';
 import graphqlHTTP from 'express-graphql';
 import { json } from 'body-parser';
-import { graphql, buildSchema } from 'graphql';
-import si from 'systeminformation';
+import { graphql } from 'graphql';
 import expressPlayground from 'graphql-playground-middleware-express';
 import dbTestRoute from './routes/dbTest';
 
-const schema = buildSchema(`
-  scalar JSONObject
-
-  type Query {
-    hello: String
-    cpu: CPU
-    memory: Memory
-  }
-
-  type CPU {
-    manufacturer: String
-    brand: String
-    vendor: String
-    family: String
-    model: String
-    stepping: String
-    revision: String
-    voltage: String
-    speed: String
-    speedmin: String
-    speedmax: String
-    governor: String
-    cores: Int
-    physicalCores: Int
-    processors: Int
-    socket: String
-    cache: JSONObject
-  }
-
-  type Memory {
-    total: Float
-    free: Float
-    used: Float
-    active: Float
-    available: Float
-    buffcache: Float
-    buffers: Float
-    cached: Float
-    slab: Float
-    swaptotal: Float
-    swapused: Float
-    swapfree: Float
-  }
-`);
-
-const root = {
-  hello: (): string => 'Hello world!',
-  cpu: si.cpu(),
-  memory: si.mem(),
-};
+import { schema, resolvers } from './graphql';
 
 const app = express();
 
@@ -65,7 +15,7 @@ app.use(
   '/graphql',
   graphqlHTTP({
     schema,
-    rootValue: root,
+    rootValue: resolvers,
   })
 );
 
@@ -78,7 +28,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-graphql(schema, '{ hello }', root).then(response => {
+graphql(schema, '{ hello }', resolvers).then(response => {
   console.log(response);
 });
 

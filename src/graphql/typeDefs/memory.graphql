@@ -1,0 +1,18 @@
+type Query {
+  memory: Memory
+}
+
+type Memory {
+  total: Float
+  free: Float
+  used: Float
+  active: Float
+  available: Float
+  buffcache: Float
+  buffers: Float
+  cached: Float
+  slab: Float
+  swaptotal: Float
+  swapused: Float
+  swapfree: Float
+}
