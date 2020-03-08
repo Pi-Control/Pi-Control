@@ -1,31 +1,16 @@
 import { Router } from 'express';
-import { Sequelize, Model, DataTypes } from 'sequelize';
+import User from '../models/User';
 
 const router = Router();
 
-class User extends Model {}
-
-const sequelize = new Sequelize('sqlite::memory:');
-
 router.get('/', (req, res, next) => {
-  User.init(
-    {
-      username: DataTypes.STRING,
-      birthday: DataTypes.DATE,
-    },
-    { sequelize, modelName: 'user' }
-  );
-
-  sequelize
-    .sync()
-    .then(() =>
-      User.create({
-        username: 'janedoe',
-        birthday: new Date(1980, 6, 20),
-      })
-    )
-    .then(jane => {
-      res.status(200).send(jane.toJSON());
+  User.create({
+    name: 'Pi User',
+    password: '1234',
+  })
+    .then(() => User.findAll())
+    .then(data => {
+      res.status(200).send(data);
       next();
     });
 });
