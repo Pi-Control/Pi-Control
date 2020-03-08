@@ -3,7 +3,7 @@ import graphqlHTTP from 'express-graphql';
 import { json } from 'body-parser';
 import { graphql, buildSchema } from 'graphql';
 import si from 'systeminformation';
-
+import expressPlayground from 'graphql-playground-middleware-express';
 import dbTestRoute from './routes/dbTest';
 
 const schema = buildSchema(`
@@ -66,9 +66,10 @@ app.use(
   graphqlHTTP({
     schema,
     rootValue: root,
-    graphiql: true,
   })
 );
+
+app.get('/playground', expressPlayground({ endpoint: '/graphql' }));
 
 app.use('/db', dbTestRoute);
 
