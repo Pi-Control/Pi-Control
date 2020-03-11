@@ -8,3 +8,5 @@ Feel free to add new cool stuff.
 
 
 WASUUUUP
+
+Commit not alive
