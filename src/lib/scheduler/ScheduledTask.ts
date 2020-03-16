@@ -13,7 +13,7 @@ class ScheduledTask {
 
   private cronJob?: CronJob;
 
-  private rerun = false;
+  private endlessTask = false;
 
   constructor(
     id: number,
@@ -28,28 +28,40 @@ class ScheduledTask {
   }
 
   public every(value: string): number {
-    if (!/^\d{2}(s|m|h|y)$/.test(value)) {
-      throw new Error('Value does not fit the pattern (xx s|m|h|y)');
+    this.endlessTask = true;
+
+    // TODO: Add more explicit regex checks
+    switch (true) {
+      case /^\d+s$/.test(value):
+        this.runCron(`*/${parseInt(value, 10)} * * * * *`);
+        break;
+      case /^\d+m$/.test(value):
+        this.runCron(`0 */${parseInt(value, 10)} * * * *`);
+        break;
+      case /^\d+h$/.test(value):
+        this.runCron(`0 0 */${parseInt(value, 10)} * * *`);
+        break;
+      case /^\d+d$/.test(value):
+        this.runCron(`0 0 0 */${parseInt(value, 10)} * *`);
+        break;
+      case /^\d+M$/.test(value):
+        this.runCron(`0 0 0 0 */${parseInt(value, 10)} *`);
+        break;
+      case /^\d+y$/.test(value):
+        this.runCron(`0 0 0 0 0 */${parseInt(value, 10)}`);
+        break;
+      default:
+        throw new Error('Value does not fit the pattern (xx s|m|h|y)');
     }
-
-    this.rerun = true;
-
-    this.onReady(this.id);
-    this.runCron('');
 
     return this.id;
   }
 
   private runCron(cronTime: string): void {
-    this.cronJob = new CronJob(cronTime, () => {
-      if (this.rerun) {
-        this.runCron(cronTime);
-      }
-      this.task();
-    });
+    this.cronJob = new CronJob(cronTime, this.task);
+    this.onReady(this.id);
+    this.cronJob.start();
   }
 }
 
 export default ScheduledTask;
-
-// Scheduler.call(() => {}).every("5s");

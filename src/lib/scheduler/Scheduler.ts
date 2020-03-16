@@ -1,22 +1,42 @@
 import ScheduledTask from './ScheduledTask';
+import debug from 'debug';
 
-class Scheduler {
+export const logger = debug('scheduler');
+
+let INSTANCE: Scheduler;
+
+export default class Scheduler {
   private idState = 0;
 
   private activeSchedulers: ScheduledTask[] = [];
 
-  public call(task: () => void): ScheduledTask {
-    this.idState += 1;
+  private constructor() {
+    //
+  }
+
+  private static instance(): Scheduler {
+    if (!INSTANCE) {
+      INSTANCE = new Scheduler();
+    }
+    return INSTANCE;
+  }
+
+  public static call(task: () => void): ScheduledTask {
+    Scheduler.instance().idState += 1;
 
     const scheduledTask = new ScheduledTask(
-      this.idState,
+      Scheduler.instance().idState,
       task,
       () => {
-        this.activeSchedulers.push(scheduledTask);
+        Scheduler.instance().activeSchedulers.push(scheduledTask);
+        logger(`Registered new task with id ${Scheduler.instance().idState}.`);
       },
       id => {
-        const taskIndex = this.activeSchedulers.findIndex(t => t.id === id);
-        this.activeSchedulers.slice(taskIndex, 1);
+        logger(`Task with id ${id} finished.`);
+        const taskIndex = Scheduler.instance().activeSchedulers.findIndex(
+          t => t.id === id
+        );
+        Scheduler.instance().activeSchedulers.slice(taskIndex, 1);
       }
     );
 

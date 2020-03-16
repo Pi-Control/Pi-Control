@@ -5,6 +5,8 @@ import { graphql } from 'graphql';
 import expressPlayground from 'graphql-playground-middleware-express';
 import dbTestRoute from './routes/dbTest';
 
+import Scheduler from './lib/scheduler/Scheduler';
+
 import { schema, resolvers } from './graphql';
 
 const app = express();
@@ -18,6 +20,10 @@ app.use(
     rootValue: resolvers,
   })
 );
+
+Scheduler.call(() => {
+  console.log('scheduler', new Date());
+}).every('1m');
 
 app.get('/playground', expressPlayground({ endpoint: '/graphql' }));
 
