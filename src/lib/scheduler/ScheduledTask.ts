@@ -1,6 +1,15 @@
 import { CronJob } from 'cron';
+import moment from 'moment';
 
 type EventCallback = (id: number) => void;
+
+// TODO: Add more explicit regex checks
+const secRegex = /^\d+s$/;
+const minRegex = /^\d+m$/;
+const hourRegex = /^\d+h$/;
+const dayRegex = /^\d+d$/;
+const monthRegex = /^\d+M$/;
+const yearRegex = /^\d+y$/;
 
 class ScheduledTask {
   public readonly id: number;
@@ -27,27 +36,32 @@ class ScheduledTask {
     this.onFinished = onFinished;
   }
 
+  public stop(): void {
+    if (this.cronJob) {
+      this.cronJob.stop();
+    }
+  }
+
   public every(value: string): number {
     this.endlessTask = true;
 
-    // TODO: Add more explicit regex checks
     switch (true) {
-      case /^\d+s$/.test(value):
+      case secRegex.test(value):
         this.runCron(`*/${parseInt(value, 10)} * * * * *`);
         break;
-      case /^\d+m$/.test(value):
+      case minRegex.test(value):
         this.runCron(`0 */${parseInt(value, 10)} * * * *`);
         break;
-      case /^\d+h$/.test(value):
+      case hourRegex.test(value):
         this.runCron(`0 0 */${parseInt(value, 10)} * * *`);
         break;
-      case /^\d+d$/.test(value):
+      case dayRegex.test(value):
         this.runCron(`0 0 0 */${parseInt(value, 10)} * *`);
         break;
-      case /^\d+M$/.test(value):
+      case monthRegex.test(value):
         this.runCron(`0 0 0 0 */${parseInt(value, 10)} *`);
         break;
-      case /^\d+y$/.test(value):
+      case yearRegex.test(value):
         this.runCron(`0 0 0 0 0 */${parseInt(value, 10)}`);
         break;
       default:
@@ -57,7 +71,40 @@ class ScheduledTask {
     return this.id;
   }
 
-  private runCron(cronTime: string): void {
+  public in(value: string): number {
+    this.endlessTask = true;
+
+    let cronTime: moment.Moment;
+
+    switch (true) {
+      case secRegex.test(value):
+        cronTime = moment().add(parseInt(value, 10), 'second');
+        break;
+      case minRegex.test(value):
+        cronTime = moment().add(parseInt(value, 10), 'minute');
+        break;
+      case hourRegex.test(value):
+        cronTime = moment().add(parseInt(value, 10), 'hour');
+        break;
+      case dayRegex.test(value):
+        cronTime = moment().add(parseInt(value, 10), 'day');
+        break;
+      case monthRegex.test(value):
+        cronTime = moment().add(parseInt(value, 10), 'month');
+        break;
+      case yearRegex.test(value):
+        cronTime = moment().add(parseInt(value, 10), 'year');
+        break;
+      default:
+        throw new Error('Value does not fit the pattern (xx s|m|h|y)');
+    }
+
+    this.runCron(cronTime);
+
+    return this.id;
+  }
+
+  private runCron(cronTime: string | moment.Moment): void {
     this.cronJob = new CronJob(cronTime, this.task);
     this.onReady(this.id);
     this.cronJob.start();

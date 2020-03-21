@@ -21,10 +21,6 @@ app.use(
   })
 );
 
-Scheduler.call(() => {
-  console.log('scheduler', new Date());
-}).every('1m');
-
 app.get('/playground', expressPlayground({ endpoint: '/graphql' }));
 
 app.use('/db', dbTestRoute);
@@ -37,5 +33,9 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 graphql(schema, '{ hello }', resolvers).then(response => {
   console.log(response);
 });
+
+Scheduler.call(() => {
+  console.log('scheduler', new Date());
+}).in('1m');
 
 app.listen(3000, () => console.log('Listening on http://localhost:3000'));
