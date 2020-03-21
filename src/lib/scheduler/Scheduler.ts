@@ -42,4 +42,16 @@ export default class Scheduler {
 
     return scheduledTask;
   }
+
+  public static stop(id: number): void {
+    const task = Scheduler.instance().activeSchedulers.find(
+      scheduler => scheduler.id === id
+    );
+
+    if (task) {
+      task.stop();
+    } else {
+      logger(`No task with id ${id} running`);
+    }
+  }
 }
