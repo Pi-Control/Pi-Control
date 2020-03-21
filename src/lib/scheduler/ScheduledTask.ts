@@ -22,8 +22,6 @@ class ScheduledTask {
 
   private cronJob?: CronJob;
 
-  private endlessTask = false;
-
   constructor(
     id: number,
     task: () => void,
@@ -43,8 +41,6 @@ class ScheduledTask {
   }
 
   public every(value: string): number {
-    this.endlessTask = true;
-
     switch (true) {
       case secRegex.test(value):
         this.runCron(`*/${parseInt(value, 10)} * * * * *`);
@@ -72,8 +68,6 @@ class ScheduledTask {
   }
 
   public in(value: string): number {
-    this.endlessTask = true;
-
     let cronTime: moment.Moment;
 
     switch (true) {
@@ -100,6 +94,12 @@ class ScheduledTask {
     }
 
     this.runCron(cronTime);
+
+    return this.id;
+  }
+
+  public custom(value: string | moment.Moment): number {
+    this.runCron(value);
 
     return this.id;
   }
