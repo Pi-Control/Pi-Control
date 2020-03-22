@@ -7,9 +7,11 @@ export const logger = debug('metrics-collector');
 
 type Collection = { value: number; unit: string };
 
-// TODO: Add specific intervals(every 5s). e.g. 10:05, 10:10, 10:15
+// TODO: Add specific intervals(every 5s).
 
 class MetricsCollector<T> {
+  private type: string;
+
   private collector: () => Promise<T>;
 
   private scrapeInterval: string;
@@ -19,11 +21,13 @@ class MetricsCollector<T> {
   private targetTable: typeof Metrics;
 
   constructor(
+    type: string,
     collector: () => Promise<T>,
     scrapeInterval: string,
     transformer: (data: T) => Collection,
     targetTable: typeof Metrics
   ) {
+    this.type = type;
     this.collector = collector;
     this.scrapeInterval = scrapeInterval;
     this.transformer = transformer;
@@ -37,11 +41,13 @@ class MetricsCollector<T> {
 
         this.targetTable
           .create({
+            type: this.type,
             value: formattedData.value,
             unit: formattedData.unit,
+            timestamp: Date.now(),
           })
           .then(() => {
-            logger('scrape succesful', this.targetTable.tableName);
+            logger('scrape succesful for: ', this.targetTable.tableName);
           });
       });
     }).every(this.scrapeInterval);

@@ -1,0 +1,15 @@
+type Query {
+  metrics: MetricsCollection
+}
+
+type MetricsCollection {
+  cpu: [Metrics]
+  memory: [Metrics]
+}
+
+type Metrics {
+  type: String
+  value: Float
+  unit: String
+  timestamp: Int
+}

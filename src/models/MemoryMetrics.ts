@@ -3,9 +3,9 @@ import database from '../database';
 
 import Metrics from './Metrics';
 
-class CpuMetrics extends Metrics {}
+class MemoryMetrics extends Metrics {}
 
-CpuMetrics.init(
+MemoryMetrics.init(
   {
     type: {
       type: DataTypes.STRING(100),
@@ -18,6 +18,7 @@ CpuMetrics.init(
     },
     timestamp: {
       type: DataTypes.INTEGER,
+      primaryKey: true,
     },
   },
   {
@@ -27,4 +28,4 @@ CpuMetrics.init(
 
 database.sync();
 
-export default CpuMetrics;
+export default MemoryMetrics;
