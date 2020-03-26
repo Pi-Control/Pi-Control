@@ -10,6 +10,7 @@ type MetricsCollection {
 type Metrics {
   type: String
   value: Float
-  unit: String
-  timestamp: Int
+  unit: String,
+  createdAt: String,
+  timestamp: String
 }
