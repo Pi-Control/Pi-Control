@@ -1,5 +1,10 @@
 <template>
   <div id="app">
+    <nav class="navigation">
+      <router-link :to="{ name: 'dashboard' }">Dashboard</router-link>
+      <router-link :to="{ name: 'general' }">General</router-link>
+      <router-link :to="{ name: 'network' }">Network</router-link>
+    </nav>
     <router-view />
   </div>
 </template>
@@ -13,16 +18,15 @@
   color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
+.navigation {
+  display: flex;
+  justify-content: center;
 
   a {
+    display: block;
+    padding: 30px;
     font-weight: bold;
     color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
   }
 }
 </style>
