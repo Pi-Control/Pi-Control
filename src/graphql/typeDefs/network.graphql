@@ -3,21 +3,21 @@ type Query {
 }
 
  type Network {
-    iface: String
-    ifaceName: String
-    ip4: String
-    ip6: String
-    mac: String
-    internal: Boolean
-    virtual: Boolean
-    operstate: String
-    type: String
-    duplex: String
-    mtu: Float
-    speed: Float
-    dhcp: Boolean
-    dnsSuffix: String
-    ieee8021xAuth: String
-    ieee8021xState: String
-    carrier_changes: Float
-  }
+  iface: String
+  ifaceName: String
+  ip4: String
+  ip6: String
+  mac: String
+  internal: Boolean
+  virtual: Boolean
+  operstate: String
+  type: String
+  duplex: String
+  mtu: Float
+  speed: Float
+  dhcp: Boolean
+  dnsSuffix: String
+  ieee8021xAuth: String
+  ieee8021xState: String
+  carrier_changes: Float
+}

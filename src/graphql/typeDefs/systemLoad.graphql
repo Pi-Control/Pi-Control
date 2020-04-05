@@ -1,0 +1,35 @@
+type Query {
+  systemLoad: SystemLoad
+}
+
+ type SystemLoad {
+  avgload: Float
+  currentload: Float
+  currentload_user: Float
+  currentload_system: Float
+  currentload_nice: Float
+  currentload_idle: Float
+  currentload_irq: Float
+  raw_currentload: Float
+  raw_currentload_user: Float
+  raw_currentload_system: Float
+  raw_currentload_nice: Float
+  raw_currentload_idle: Float
+  raw_currentload_irq: Float
+  cpus: [CurrentLoadCpuData]
+}
+
+type CurrentLoadCpuData {
+  load: Float
+  load_user: Float
+  load_system: Float
+  load_nice: Float
+  load_idle: Float
+  load_irq: Float
+  raw_load: Float
+  raw_load_user: Float
+  raw_load_system: Float
+  raw_load_nice: Float
+  raw_load_idle: Float
+  raw_load_irq: Float
+}

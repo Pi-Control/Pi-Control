@@ -1,0 +1,33 @@
+type Query {
+  processes: Processes
+}
+
+type Processes {
+  all: Float
+  running: Float
+  blocked: Float
+  sleeping: Float
+  unknown: Float
+  list: [ProcessesProcessData]
+}
+
+type ProcessesProcessData {
+  pid: Float
+  parentPid: Float
+  name: String,
+  pcpu: Float
+  pcpuu: Float
+  pcpus: Float
+  pmem: Float
+  priority: Float
+  mem_vsz: Float
+  mem_rss: Float
+  nice: Float
+  started: String,
+  state: String
+  tty: String
+  user: String
+  command: String
+  params: String
+  path: String
+}
