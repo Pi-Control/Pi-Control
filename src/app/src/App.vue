@@ -4,6 +4,7 @@
       <router-link :to="{ name: 'dashboard' }">Dashboard</router-link>
       <router-link :to="{ name: 'general' }">General</router-link>
       <router-link :to="{ name: 'network' }">Network</router-link>
+      <router-link :to="{ name: 'processes' }">Processes</router-link>
     </nav>
     <router-view />
   </div>

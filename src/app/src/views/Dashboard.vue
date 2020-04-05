@@ -72,7 +72,7 @@ query {
           );
 
           const cpuSpeed = data.data.metrics.cpu.filter(
-            cpu => cpu.type === 'cpu_speed'
+            cpu => cpu.type === 'cpu_load'
           );
 
           this.memoryChartData = {
@@ -88,7 +88,7 @@ query {
             }),
             datasets: [
               {
-                label: 'Memory Usage',
+                label: 'Memory Usage (MB)',
                 borderColor: '#d32f2f',
                 backgroundColor: 'rgba(211,47,47, 0.3)',
                 data: memoryData.map(mem =>
@@ -111,15 +111,15 @@ query {
             }),
             datasets: [
               {
-                label: 'CPU Speed',
+                label: 'CPU Load (%)',
                 borderColor: '#303F9F',
                 backgroundColor: 'rgba(48,63,159, 0.3)',
                 data: cpuSpeed.map(mem => mem.value),
               },
               {
-                label: 'CPU Temperature',
+                label: 'CPU Temperature (°C)',
                 borderColor: '#d32f2f',
-                backgroundColor: 'rgba(211,47,47, 0.3)',
+                backgroundColor: 'rgba(0, 0, 0, 0)',
                 data: cpuData.map(mem => mem.value),
               },
             ],

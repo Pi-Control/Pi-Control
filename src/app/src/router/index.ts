@@ -4,6 +4,7 @@ import VueRouter from 'vue-router';
 import Dashboard from '@/views/Dashboard.vue';
 import General from '@/views/General.vue';
 import Network from '@/views/Network.vue';
+import Process from '@/views/Processes.vue';
 
 Vue.use(VueRouter);
 
@@ -22,6 +23,11 @@ const routes = [
     path: '/net',
     name: 'network',
     component: Network,
+  },
+  {
+    path: '/proc',
+    name: 'processes',
+    component: Process,
   },
 ];
 
