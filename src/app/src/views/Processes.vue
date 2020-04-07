@@ -9,6 +9,7 @@
           <th>State</th>
           <th>Path</th>
           <th>Running since</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -19,6 +20,9 @@
           <td v-text="data.state" />
           <td v-text="data.path" />
           <td v-text="data.started" />
+          <td>
+            <a href="#" @click="killProcess(data.pid)">Kill</a>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -54,6 +58,26 @@ query {
       .then(r => r.json())
       .then(data => {
         this.processData = data.data.processes.list;
+      });
+  }
+
+  killProcess(pid: number): void {
+    const query = `
+mutation {
+  killProcess(pid: ${pid})
+}`;
+
+    fetch('http://192.168.2.58:3000/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({ query }),
+    })
+      .then(r => r.json())
+      .then(data => {
+        console.log(data);
       });
   }
 }
