@@ -1,5 +1,7 @@
 <template>
   <div class="processes">
+    <a href="#" @click="shutdown">Shutdown</a>
+    <a href="#" @click="restart">Restart</a>
     <table border="1">
       <thead>
         <tr>
@@ -80,11 +82,52 @@ mutation {
         console.log(data);
       });
   }
+
+  shutdown(): void {
+    const query = `
+mutation {
+  shutdown
+}`;
+
+    fetch('http://192.168.2.58:3000/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({ query }),
+    })
+      .then(r => r.json())
+      .then(data => {
+        console.log(data);
+      });
+  }
+
+  restart(): void {
+    const query = `
+mutation {
+  restart
+}`;
+
+    fetch('http://192.168.2.58:3000/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({ query }),
+    })
+      .then(r => r.json())
+      .then(data => {
+        console.log(data);
+      });
+  }
 }
 </script>
 <style lang="scss" scoped>
 .processes {
   display: flex;
+  flex-direction: column;
   justify-content: center;
 }
 </style>
