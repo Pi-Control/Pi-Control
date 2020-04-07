@@ -8,8 +8,6 @@ import * as Bootstrap from './bootstrap';
 
 import dbTestRoute from './routes/dbTest';
 
-import Scheduler from './lib/scheduler/Scheduler';
-
 import { schema, resolvers } from './graphql';
 
 const app = express();
@@ -37,11 +35,5 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 Bootstrap.initializeMetrics();
 
 Bootstrap.startCollecting();
-
-// Scheduler test TODO: Remove
-Scheduler.call(() => {
-  console.log('scheduler', new Date());
-}).in('1m');
-// Scheduler test end
 
 app.listen(3000, () => console.log('Listening on http://localhost:3000'));
