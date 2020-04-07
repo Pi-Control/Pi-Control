@@ -2,6 +2,10 @@ type Query {
   processes: Processes
 }
 
+type Mutation {
+  killProcess(pid: Int): Boolean
+}
+
 type Processes {
   all: Float
   running: Float
