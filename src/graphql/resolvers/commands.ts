@@ -4,7 +4,7 @@ export default {
   restart: (): Promise<void> => {
     return new Promise<void>((resolve, reject) => {
       // TODO: Move to lib
-      exec('shutdown -r now', (error, stdout, stderr) => {
+      exec('sudo shutdown -r now', (error, stdout, stderr) => {
         if (error) {
           reject(stderr);
         } else {
@@ -16,7 +16,7 @@ export default {
   shutdown: (): Promise<void> => {
     return new Promise<void>((resolve, reject) => {
       // TODO: Move to lib
-      exec('shutdown -h now', (error, stdout, stderr) => {
+      exec('sudo shutdown -h now', (error, stdout, stderr) => {
         if (error) {
           reject(stderr);
         } else {
