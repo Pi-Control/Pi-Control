@@ -1,5 +1,4 @@
 import { processes, Systeminformation } from 'systeminformation';
-import { exec } from 'child_process';
 
 export default {
   Query: {
@@ -8,17 +7,19 @@ export default {
   },
 
   Mutation: {
-    killProcess: ({ pid }: { pid: number }): Promise<boolean> => {
-      return new Promise<boolean>((resolve, reject) => {
-        // TODO: Move to lib
-        exec(`kill ${pid}`, (error, stdout, stderr) => {
-          if (error) {
-            reject(stderr);
-          } else {
-            resolve(true);
-          }
-        });
-      });
+    killProcess: async (
+      parent: void,
+      {
+        pid,
+        signal = 15,
+      }: {
+        pid: number;
+        signal: number;
+      }
+    ): Promise<boolean> => {
+      // TODO: Move to lib
+      await process.kill(pid, signal);
+      return true;
     },
   },
 };

@@ -3,7 +3,7 @@ type Query {
 }
 
 type Mutation {
-  killProcess(pid: Int): Boolean
+  killProcess(pid: Int, signal: Int): Boolean
 }
 
 type Processes {
@@ -18,7 +18,7 @@ type Processes {
 type ProcessesProcessData {
   pid: Float
   parentPid: Float
-  name: String,
+  name: String
   pcpu: Float
   pcpuu: Float
   pcpus: Float
@@ -27,7 +27,7 @@ type ProcessesProcessData {
   mem_vsz: Float
   mem_rss: Float
   nice: Float
-  started: String,
+  started: String
   state: String
   tty: String
   user: String
