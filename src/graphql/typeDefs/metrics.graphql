@@ -1,11 +1,8 @@
 type Query {
-  metrics: MetricsCollection
+  metricsCpu: [Metrics]
+  metricsMemory: [Metrics]
 }
 
-type MetricsCollection {
-  cpu: [Metrics]
-  memory: [Metrics]
-}
 
 type Metrics {
   type: String
