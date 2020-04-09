@@ -1,6 +1,8 @@
 import { currentLoad, Systeminformation } from 'systeminformation';
 
 export default {
-  systemLoad: async (): Promise<Systeminformation.CurrentLoadData> =>
-    currentLoad(),
+  Query: {
+    systemLoad: async (): Promise<Systeminformation.CurrentLoadData> =>
+      currentLoad(),
+  },
 };

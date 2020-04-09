@@ -2,7 +2,11 @@ import CpuMetrics from '../../models/CpuMetrics';
 import MemoryMetrics from '../../models/MemoryMetrics';
 
 export default {
-  metrics: {
+  Query: {
+    metrics: (): {} => ({ cpu: null, memory: null }),
+  },
+
+  MetricsCollection: {
     cpu(): Promise<CpuMetrics[]> {
       return CpuMetrics.findAll();
     },

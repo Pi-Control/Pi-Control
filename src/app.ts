@@ -1,29 +1,19 @@
 import express, { Request, Response, NextFunction } from 'express';
-import graphqlHTTP from 'express-graphql';
 import { json } from 'body-parser';
 import cors from 'cors';
-import expressPlayground from 'graphql-playground-middleware-express';
+import { ApolloServer } from 'apollo-server-express';
 
 import * as Bootstrap from './bootstrap';
-
+import { typeDefs, resolvers } from './graphql';
 import dbTestRoute from './routes/dbTest';
-
-import { schema, resolvers } from './graphql';
 
 const app = express();
 
 app.use(json());
 app.use(cors());
 
-app.use(
-  '/graphql',
-  graphqlHTTP({
-    schema,
-    rootValue: resolvers,
-  })
-);
-
-app.get('/playground', expressPlayground({ endpoint: '/graphql' }));
+const server = new ApolloServer({ typeDefs, resolvers });
+server.applyMiddleware({ app });
 
 app.use('/db', dbTestRoute);
 
