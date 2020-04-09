@@ -50,10 +50,8 @@ export default {
     fetchData() {
       const query = `
 query {
-  metrics {
-    memory {type value timestamp}
-    cpu {type value timestamp}
-  }
+  metricsCpu {type value timestamp}
+  metricsMemory {type value timestamp}
 }`;
 
       fetch('http://192.168.2.58:3000/graphql', {
@@ -66,12 +64,12 @@ query {
       })
         .then(r => r.json())
         .then(data => {
-          const memoryData = data.data.metrics.memory;
-          const cpuData = data.data.metrics.cpu.filter(
+          const memoryData = data.data.metricsMemory;
+          const cpuData = data.data.metricsCpu.filter(
             cpu => cpu.type === 'cpu_temperature'
           );
 
-          const cpuSpeed = data.data.metrics.cpu.filter(
+          const cpuSpeed = data.data.metricsCpu.filter(
             cpu => cpu.type === 'cpu_load'
           );
 
