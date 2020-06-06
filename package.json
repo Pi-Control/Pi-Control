@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/Pi-Control/Pi-Control#readme",
   "dependencies": {
-    "apollo-server-express": "^2.12.0",
+    "apollo-server-express": "^2.14.2",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "cron": "^1.8.2",
