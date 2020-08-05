@@ -58,7 +58,7 @@ query {
   memory {total swaptotal buffers}
 }`;
 
-    fetch('http://192.168.2.58:3000/graphql', {
+    fetch('http://localhost:3000/graphql', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
