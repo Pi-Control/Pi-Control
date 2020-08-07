@@ -3,9 +3,14 @@ import database from '../database';
 
 import Metrics from './Metrics';
 
-class MemoryMetrics extends Metrics {}
+class CpuMetrics extends Metrics {
+  public type!: string;
+  public value!: number;
+  public unit!: string;
+  public timestamp!: string;
+}
 
-MemoryMetrics.init(
+CpuMetrics.init(
   {
     type: {
       type: DataTypes.STRING(100),
@@ -18,14 +23,13 @@ MemoryMetrics.init(
     },
     timestamp: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
     },
   },
   {
     sequelize: database,
-  }
+  },
 );
 
 database.sync();
 
-export default MemoryMetrics;
+export default CpuMetrics;

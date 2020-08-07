@@ -1,6 +1,6 @@
 import debug from 'debug';
 
-import Metrics from '../../models/Metrics';
+import Metrics from '../../db/models/Metrics';
 import Scheduler from '../scheduler/Scheduler';
 
 export const logger = debug('metrics-collector');
@@ -11,13 +11,9 @@ type Collection = { value: number; unit: string };
 
 class MetricsCollector<T> {
   private type: string;
-
   private collector: () => Promise<T>;
-
   private scrapeInterval: string;
-
   private transformer: (data: T) => Collection;
-
   private targetTable: typeof Metrics;
 
   constructor(
@@ -25,7 +21,7 @@ class MetricsCollector<T> {
     collector: () => Promise<T>,
     scrapeInterval: string,
     transformer: (data: T) => Collection,
-    targetTable: typeof Metrics
+    targetTable: typeof Metrics,
   ) {
     this.type = type;
     this.collector = collector;
@@ -36,7 +32,7 @@ class MetricsCollector<T> {
 
   public start(): void {
     Scheduler.call(() => {
-      this.collector().then(data => {
+      this.collector().then((data) => {
         const formattedData = this.transformer(data);
 
         this.targetTable

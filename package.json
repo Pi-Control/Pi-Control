@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev src/app.ts",
-    "start": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/app.ts"
+    "lint": "eslint --fix src/**/*.{js,ts,tsx}",
+    "serve": "ts-node-dev src/app.ts"
   },
   "repository": {
     "type": "git",
@@ -20,12 +20,14 @@
   "homepage": "https://github.com/Pi-Control/Pi-Control#readme",
   "dependencies": {
     "apollo-server-express": "^2.12.0",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "cron": "^1.8.2",
     "debug": "^4.1.1",
     "express": "^4.17.1",
     "graphql": "^15.3.0",
+    "jsonwebtoken": "^8.5.1",
     "merge-graphql-schemas": "^1.7.6",
     "moment": "^2.24.0",
     "sequelize": "^6.3.4",
@@ -33,10 +35,12 @@
     "systeminformation": "^4.22.5"
   },
   "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
     "@types/bluebird": "^3.5.30",
     "@types/cron": "^1.7.2",
     "@types/debug": "^4.1.5",
     "@types/express": "^4.17.2",
+    "@types/jsonwebtoken": "^8.5.0",
     "@types/node": "^14.0.27",
     "@types/validator": "^13.1.0",
     "@typescript-eslint/eslint-plugin": "^3.8.0",

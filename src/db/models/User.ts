@@ -3,13 +3,11 @@ import database from '../database';
 
 class User extends Model {
   public id!: number;
-
   public name!: string;
-
   public password!: string;
+  public lastLoggedIn!: Date;
 
   public readonly createdAt!: Date;
-
   public readonly updatedAt!: Date;
 }
 
@@ -28,10 +26,14 @@ User.init(
       type: new DataTypes.STRING(128),
       allowNull: false,
     },
+    lastLoggedIn: {
+      type: new DataTypes.DATE(),
+      allowNull: true,
+    },
   },
   {
     sequelize: database,
-  }
+  },
 );
 
 database.sync();

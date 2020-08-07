@@ -26,7 +26,7 @@ class ScheduledTask {
     id: number,
     task: () => void,
     onReady: EventCallback,
-    onFinished: EventCallback
+    onFinished: EventCallback,
   ) {
     this.id = id;
     this.task = task;

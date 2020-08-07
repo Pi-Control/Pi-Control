@@ -3,10 +3,10 @@ import { mergeResolvers, mergeTypes, fileLoader } from 'merge-graphql-schemas';
 import { buildSchema } from 'graphql';
 
 const typeDefs = mergeTypes(
-  fileLoader(join(__dirname, 'typeDefs/**/*.graphql'))
+  fileLoader(join(__dirname, 'typeDefs/**/*.graphql')),
 );
 const resolvers = mergeResolvers(
-  fileLoader(join(__dirname, 'resolvers/**/*.ts'))
+  fileLoader(join(__dirname, 'resolvers/**/*.ts')),
 );
 const schema = buildSchema(typeDefs);
 

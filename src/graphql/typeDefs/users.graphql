@@ -2,7 +2,7 @@ type Query {
   users: [User]
 }
 
- type User {
+type User {
   user: String
   tty: String
   date: String

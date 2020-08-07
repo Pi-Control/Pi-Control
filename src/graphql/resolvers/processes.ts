@@ -15,7 +15,7 @@ export default {
       }: {
         pid: number;
         signal: number;
-      }
+      },
     ): Promise<boolean> => {
       // TODO: Move to lib
       await process.kill(pid, signal);

@@ -31,13 +31,13 @@ export default class Scheduler {
         Scheduler.instance().activeSchedulers.push(scheduledTask);
         logger(`Registered new task with id ${Scheduler.instance().idState}.`);
       },
-      id => {
+      (id) => {
         logger(`Task with id ${id} finished.`);
         const taskIndex = Scheduler.instance().activeSchedulers.findIndex(
-          t => t.id === id
+          (t) => t.id === id,
         );
         Scheduler.instance().activeSchedulers.slice(taskIndex, 1);
-      }
+      },
     );
 
     return scheduledTask;
@@ -45,7 +45,7 @@ export default class Scheduler {
 
   public static stop(id: number): void {
     const task = Scheduler.instance().activeSchedulers.find(
-      scheduler => scheduler.id === id
+      (scheduler) => scheduler.id === id,
     );
 
     if (task) {

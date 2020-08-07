@@ -1,5 +1,5 @@
-import CpuMetrics from '../../models/CpuMetrics';
-import MemoryMetrics from '../../models/MemoryMetrics';
+import CpuMetrics from '../../db/models/CpuMetrics';
+import MemoryMetrics from '../../db/models/MemoryMetrics';
 
 export default {
   Query: {
