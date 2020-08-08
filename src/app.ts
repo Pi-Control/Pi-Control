@@ -7,13 +7,12 @@ import jwt from 'jsonwebtoken';
 import * as Bootstrap from './bootstrap';
 import { typeDefs, resolvers } from './graphql';
 import user from './db/user';
+import config from './config';
 
 const app = express();
 
 app.use(json());
 app.use(cors());
-
-const privateKey = '1234';
 
 const server = new ApolloServer({
   typeDefs,
@@ -26,7 +25,7 @@ const server = new ApolloServer({
     }
 
     try {
-      const decoded = jwt.verify(token, privateKey);
+      const decoded = jwt.verify(token, config.getSalt());
 
       if (typeof decoded === 'object') {
         // set it manually because typescript can't infer the correct type

@@ -2,8 +2,7 @@ import jwt from 'jsonwebtoken';
 import user from '../../db/user';
 import { AuthenticationError, UserInputError } from 'apollo-server-express';
 import { RouteContext } from '../../lib/Router';
-
-const privateKey = '1234';
+import config from '../../config';
 
 export default {
   Mutation: {
@@ -21,7 +20,7 @@ export default {
           throw new UserInputError('Account already authenticated');
         }
 
-        const token = jwt.sign({}, privateKey, {
+        const token = jwt.sign({}, config.getSalt(), {
           jwtid: username,
           expiresIn: '24h',
         });
