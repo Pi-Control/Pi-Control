@@ -1,14 +1,19 @@
-import CpuMetrics from '../../db/models/CpuMetrics';
-import MemoryMetrics from '../../db/models/MemoryMetrics';
+import { cpu, mem, Systeminformation } from 'systeminformation';
+
+import { CpuMetrics, MemoryMetrics } from '../../db/models/Metrics';
 
 export default {
   Query: {
-    metricsCpu(): Promise<CpuMetrics[]> {
-      return CpuMetrics.findAll();
+    currentCpu: async (): Promise<Systeminformation.CpuData> => cpu(),
+
+    currentMemory: async (): Promise<Systeminformation.MemData> => mem(),
+
+    historyCpu(): Promise<CpuMetrics[]> {
+      return CpuMetrics.find();
     },
 
-    metricsMemory(): Promise<MemoryMetrics[]> {
-      return MemoryMetrics.findAll();
+    historyMemory(): Promise<MemoryMetrics[]> {
+      return MemoryMetrics.find();
     },
   },
 };

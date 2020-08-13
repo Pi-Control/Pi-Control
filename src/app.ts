@@ -6,8 +6,9 @@ import jwt from 'jsonwebtoken';
 
 import * as Bootstrap from './bootstrap';
 import { typeDefs, resolvers } from './graphql';
-import user from './db/user';
 import config from './config';
+import User from './db/models/User';
+import { establishConnection } from './db/database';
 
 const app = express();
 
@@ -31,7 +32,7 @@ const server = new ApolloServer({
         // set it manually because typescript can't infer the correct type
         const jwt = decoded as { jti: string };
 
-        const u = await user.getByName(jwt.jti);
+        const u = await User.findOne(jwt.jti);
 
         if (u) {
           return { user: u };
@@ -49,13 +50,11 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-Bootstrap.initializeMetrics();
+establishConnection().then(() => {
+  Bootstrap.initializeMetrics();
 
-Bootstrap.startCollecting();
-
-// Debug things
-
-user.create('Foo', 'Bar');
+  Bootstrap.startCollecting();
+});
 
 // End
 

@@ -1,10 +1,13 @@
-import { Sequelize } from 'sequelize';
-import debug from 'debug';
+import { createConnection, Connection } from 'typeorm';
 
-export const logger = debug('sql-sequelize');
+import User from './models/User';
+import { CpuMetrics, MemoryMetrics } from './models/Metrics';
 
-const sequelize = new Sequelize('sqlite::memory:', {
-  logging: logger,
-});
-
-export default sequelize;
+export function establishConnection(): Promise<Connection> {
+  return createConnection({
+    type: 'sqlite',
+    database: ':memory:',
+    entities: [User, CpuMetrics, MemoryMetrics],
+    synchronize: true,
+  });
+}

@@ -1,41 +1,31 @@
-import { Model, DataTypes } from 'sequelize';
-import database from '../database';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BaseEntity,
+  CreateDateColumn,
+  DeleteDateColumn,
+} from 'typeorm';
 
-class User extends Model {
+@Entity()
+class User extends BaseEntity {
+  @PrimaryGeneratedColumn()
   public id!: number;
+
+  @Column({ nullable: false, length: 50 })
   public name!: string;
+
+  @Column({ nullable: false, length: 128 })
   public password!: string;
+
+  @Column({ nullable: true })
   public lastLoggedIn!: Date;
 
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  @CreateDateColumn()
+  public readonly createdAt?: Date;
+
+  @DeleteDateColumn()
+  public readonly updatedAt?: Date;
 }
-
-User.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    name: {
-      type: new DataTypes.STRING(32),
-      allowNull: false,
-    },
-    password: {
-      type: new DataTypes.STRING(128),
-      allowNull: false,
-    },
-    lastLoggedIn: {
-      type: new DataTypes.DATE(),
-      allowNull: true,
-    },
-  },
-  {
-    sequelize: database,
-  },
-);
-
-database.sync();
 
 export default User;

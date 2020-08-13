@@ -1,6 +1,6 @@
 import debug from 'debug';
 
-import Metrics from '../../db/models/Metrics';
+import { Metrics } from '../../db/models/Metrics';
 import Scheduler from '../scheduler/Scheduler';
 
 export const logger = debug('metrics-collector');
@@ -35,16 +35,14 @@ class MetricsCollector<T> {
       this.collector().then((data) => {
         const formattedData = this.transformer(data);
 
-        this.targetTable
-          .create({
-            type: this.type,
-            value: formattedData.value,
-            unit: formattedData.unit,
-            timestamp: Date.now(),
-          })
-          .then(() => {
-            logger('scrape succesful for: ', this.targetTable.tableName);
-          });
+        const metric = new this.targetTable();
+        metric.type = this.type;
+        metric.value = formattedData.value;
+        metric.unit = formattedData.unit;
+        metric.timestamp = Date.now();
+        metric.save().then((metrics) => {
+          logger('scrape succesful for: ', metrics.type);
+        });
       });
     }).every(this.scrapeInterval);
   }

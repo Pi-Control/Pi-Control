@@ -7,8 +7,7 @@ import {
 
 import MetricsCollector from '../lib/metrics/MetricsCollector';
 
-import CpuMetrics from '../db/models/CpuMetrics';
-import MemoryMetrics from '../db/models/MemoryMetrics';
+import { CpuMetrics, MemoryMetrics } from '../db/models/Metrics';
 
 let cpuLoadMetrics: MetricsCollector<Systeminformation.CurrentLoadData>;
 let cpuTemperatureMetrics: MetricsCollector<Systeminformation.CpuTemperatureData>;

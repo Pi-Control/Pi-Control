@@ -30,9 +30,9 @@
     "jsonwebtoken": "^8.5.1",
     "merge-graphql-schemas": "^1.7.6",
     "moment": "^2.24.0",
-    "sequelize": "^6.3.4",
     "sqlite3": "^5.0.0",
-    "systeminformation": "^4.22.5"
+    "systeminformation": "^4.22.5",
+    "typeorm": "^0.2.25"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",

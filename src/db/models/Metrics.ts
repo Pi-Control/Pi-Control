@@ -1,10 +1,21 @@
-import { Model } from 'sequelize';
+import { Entity, Column, BaseEntity, PrimaryColumn } from 'typeorm';
 
-class Metrics extends Model {
+export class Metrics extends BaseEntity {
+  @Column({ length: 50 })
   type!: string;
+
+  @Column()
   value!: number;
+
+  @Column({ length: 50 })
   unit!: string;
-  timestamp!: string;
+
+  @PrimaryColumn()
+  timestamp!: number;
 }
 
-export default Metrics;
+@Entity()
+export class CpuMetrics extends Metrics {}
+
+@Entity()
+export class MemoryMetrics extends Metrics {}
