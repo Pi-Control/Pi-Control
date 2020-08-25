@@ -7,7 +7,7 @@ import {
 
 import MetricsCollector from '../lib/metrics/MetricsCollector';
 
-import { CpuMetrics, MemoryMetrics } from '../db/models/Metrics';
+import { CpuMetric, MemoryMetric } from '../db/models/Metrics';
 
 let cpuLoadMetrics: MetricsCollector<Systeminformation.CurrentLoadData>;
 let cpuTemperatureMetrics: MetricsCollector<Systeminformation.CpuTemperatureData>;
@@ -22,7 +22,7 @@ export function initializeMetrics(): void {
     currentLoad,
     scrapeInterval,
     (data) => ({ value: data.currentload, unit: 'Percentage' }),
-    CpuMetrics,
+    CpuMetric,
   );
 
   cpuTemperatureMetrics = new MetricsCollector(
@@ -30,7 +30,7 @@ export function initializeMetrics(): void {
     cpuTemperature,
     scrapeInterval,
     (data) => ({ value: data.main, unit: 'Degress' }),
-    CpuMetrics,
+    CpuMetric,
   );
 
   memoryAvailableMetrics = new MetricsCollector(
@@ -38,7 +38,7 @@ export function initializeMetrics(): void {
     mem,
     scrapeInterval,
     (data) => ({ value: data.available, unit: 'Byte' }),
-    MemoryMetrics,
+    MemoryMetric,
   );
 }
 

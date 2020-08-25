@@ -1,0 +1,12 @@
+type Query {
+  linuxUsers: [LinuxUser]
+}
+
+type LinuxUser {
+  user: String
+  tty: String
+  date: String
+  time: String
+  ip: String
+  command: String
+}

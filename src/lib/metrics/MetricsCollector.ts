@@ -1,6 +1,6 @@
 import debug from 'debug';
 
-import { Metrics } from '../../db/models/Metrics';
+import { Metric } from '../../db/models/Metrics';
 import Scheduler from '../scheduler/Scheduler';
 
 export const logger = debug('metrics-collector');
@@ -14,14 +14,14 @@ class MetricsCollector<T> {
   private collector: () => Promise<T>;
   private scrapeInterval: string;
   private transformer: (data: T) => Collection;
-  private targetTable: typeof Metrics;
+  private targetTable: typeof Metric;
 
   constructor(
     type: string,
     collector: () => Promise<T>,
     scrapeInterval: string,
     transformer: (data: T) => Collection,
-    targetTable: typeof Metrics,
+    targetTable: typeof Metric,
   ) {
     this.type = type;
     this.collector = collector;
@@ -40,8 +40,8 @@ class MetricsCollector<T> {
         metric.value = formattedData.value;
         metric.unit = formattedData.unit;
         metric.timestamp = Date.now();
-        metric.save().then((metrics) => {
-          logger('scrape succesful for: ', metrics.type);
+        metric.save().then((metric) => {
+          logger('scrape succesful for ', metric.type);
         });
       });
     }).every(this.scrapeInterval);

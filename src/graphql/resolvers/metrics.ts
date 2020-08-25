@@ -1,6 +1,6 @@
 import { cpu, mem, Systeminformation } from 'systeminformation';
 
-import { CpuMetrics, MemoryMetrics } from '../../db/models/Metrics';
+import { CpuMetric, MemoryMetric } from '../../db/models/Metrics';
 
 export default {
   Query: {
@@ -8,12 +8,12 @@ export default {
 
     currentMemory: async (): Promise<Systeminformation.MemData> => mem(),
 
-    historyCpu(): Promise<CpuMetrics[]> {
-      return CpuMetrics.find();
+    historyCpu(): Promise<CpuMetric[]> {
+      return CpuMetric.find();
     },
 
-    historyMemory(): Promise<MemoryMetrics[]> {
-      return MemoryMetrics.find();
+    historyMemory(): Promise<MemoryMetric[]> {
+      return MemoryMetric.find();
     },
   },
 };

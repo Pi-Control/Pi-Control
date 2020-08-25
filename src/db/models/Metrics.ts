@@ -1,6 +1,6 @@
 import { Entity, Column, BaseEntity, PrimaryColumn } from 'typeorm';
 
-export class Metrics extends BaseEntity {
+export class Metric extends BaseEntity {
   @Column({ length: 50 })
   type!: string;
 
@@ -15,7 +15,7 @@ export class Metrics extends BaseEntity {
 }
 
 @Entity()
-export class CpuMetrics extends Metrics {}
+export class CpuMetric extends Metric {}
 
 @Entity()
-export class MemoryMetrics extends Metrics {}
+export class MemoryMetric extends Metric {}

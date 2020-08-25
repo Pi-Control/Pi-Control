@@ -3,30 +3,31 @@ import {
   PrimaryGeneratedColumn,
   Column,
   BaseEntity,
-  CreateDateColumn,
   UpdateDateColumn,
+  CreateDateColumn,
   DeleteDateColumn,
-  ManyToOne,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 
-import Group from './Group';
+import User from './User';
+import Right from './Right';
 
 @Entity()
-class User extends BaseEntity {
+class Group extends BaseEntity {
   @PrimaryGeneratedColumn()
   public id!: number;
 
   @Column({ nullable: false, length: 50 })
   public name!: string;
 
-  @Column({ nullable: false, length: 128 })
-  public password!: string;
+  @OneToMany(() => User, (user) => user.group)
+  public users!: User;
 
-  @Column({ nullable: true })
-  public lastLoggedIn!: Date;
-
-  @ManyToOne(() => Group, (group) => group.users)
-  public group!: Group;
+  @ManyToMany(() => Right)
+  @JoinTable()
+  public rights!: Right;
 
   @CreateDateColumn()
   public readonly createdAt?: Date;
@@ -38,4 +39,4 @@ class User extends BaseEntity {
   public readonly deleteddAt?: Date;
 }
 
-export default User;
+export default Group;
