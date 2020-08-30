@@ -1,0 +1,22 @@
+type Query {
+  getGroups: [Group]
+}
+
+type Mutation {
+  createGroup(name: String!, isAdmin: Boolean!, rights: [Int]): Group
+  updateGroup(id: Int!, name: String!, isAdmin: Boolean!, rights: [Int]): Group
+  deleteGroup(id: Int!, hard: Boolean!): Group
+}
+
+type Group {
+  id: Int
+  name: String
+  isAdmin: Boolean
+  users: [User]
+  rights: [Right]
+}
+
+type Right {
+  id: Int
+  name: String
+}

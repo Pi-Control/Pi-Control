@@ -35,7 +35,14 @@ class User extends BaseEntity {
   public readonly updatedAt?: Date;
 
   @DeleteDateColumn()
-  public readonly deleteddAt?: Date;
+  public readonly deletedAt?: Date;
+
+  public hasRight(name: string): boolean {
+    return (
+      this.group.isAdmin ||
+      this.group.rights.map((right) => right.name).includes(name)
+    );
+  }
 }
 
 export default User;

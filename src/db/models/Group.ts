@@ -22,12 +22,15 @@ class Group extends BaseEntity {
   @Column({ nullable: false, length: 50 })
   public name!: string;
 
+  @Column({ default: false })
+  public isAdmin!: boolean;
+
   @OneToMany(() => User, (user) => user.group)
   public users!: User;
 
   @ManyToMany(() => Right)
   @JoinTable()
-  public rights!: Right;
+  public rights!: Right[];
 
   @CreateDateColumn()
   public readonly createdAt?: Date;
