@@ -4,6 +4,7 @@ import moment from 'moment';
 type EventCallback = (id: number) => void;
 
 // TODO: Add more explicit regex checks
+const msRegex = /^\d+ms$/;
 const secRegex = /^\d+s$/;
 const minRegex = /^\d+m$/;
 const hourRegex = /^\d+h$/;
@@ -14,9 +15,9 @@ const yearRegex = /^\d+y$/;
 class ScheduledTask {
   public readonly id: number;
 
-  private onReady: EventCallback;
+  private onReady?: EventCallback;
 
-  private onFinished: EventCallback;
+  private onFinished?: EventCallback;
 
   private task: () => void;
 
@@ -25,8 +26,8 @@ class ScheduledTask {
   constructor(
     id: number,
     task: () => void,
-    onReady: EventCallback,
-    onFinished: EventCallback,
+    onReady?: EventCallback,
+    onFinished?: EventCallback,
   ) {
     this.id = id;
     this.task = task;
@@ -40,29 +41,32 @@ class ScheduledTask {
     }
   }
 
-  public every(value: string): number {
+  public every(value: string, executions = -1): number {
+    let cron = '';
     switch (true) {
       case secRegex.test(value):
-        this.runCron(`*/${parseInt(value, 10)} * * * * *`);
+        cron = `*/${parseInt(value, 10)} * * * * *`;
         break;
       case minRegex.test(value):
-        this.runCron(`0 */${parseInt(value, 10)} * * * *`);
+        cron = `0 */${parseInt(value, 10)} * * * *`;
         break;
       case hourRegex.test(value):
-        this.runCron(`0 0 */${parseInt(value, 10)} * * *`);
+        cron = `0 0 */${parseInt(value, 10)} * * *`;
         break;
       case dayRegex.test(value):
-        this.runCron(`0 0 0 */${parseInt(value, 10)} * *`);
+        cron = `0 0 0 */${parseInt(value, 10)} * *`;
         break;
       case monthRegex.test(value):
-        this.runCron(`0 0 0 0 */${parseInt(value, 10)} *`);
+        cron = `0 0 0 0 */${parseInt(value, 10)} *`;
         break;
       case yearRegex.test(value):
-        this.runCron(`0 0 0 0 0 */${parseInt(value, 10)}`);
+        cron = `0 0 0 0 0 */${parseInt(value, 10)}`;
         break;
       default:
         throw new Error('Value does not fit the pattern (xx s|m|h|y)');
     }
+
+    this.runCron(cron, executions);
 
     return this.id;
   }
@@ -71,6 +75,9 @@ class ScheduledTask {
     let cronTime: moment.Moment;
 
     switch (true) {
+      case msRegex.test(value):
+        cronTime = moment().add(parseInt(value, 10), 'milliseconds');
+        break;
       case secRegex.test(value):
         cronTime = moment().add(parseInt(value, 10), 'second');
         break;
@@ -90,7 +97,7 @@ class ScheduledTask {
         cronTime = moment().add(parseInt(value, 10), 'year');
         break;
       default:
-        throw new Error('Value does not fit the pattern (xx s|m|h|y)');
+        throw new Error('Value does not fit the pattern (xx ms|s|m|h|y)');
     }
 
     this.runCron(cronTime);
@@ -104,10 +111,42 @@ class ScheduledTask {
     return this.id;
   }
 
-  private runCron(cronTime: string | moment.Moment): void {
-    this.cronJob = new CronJob(cronTime, this.task);
-    this.onReady(this.id);
+  private runCron(cronTime: string | moment.Moment, executions = 1): void {
+    // call all events immediately and return without starting the cronjob
+    if (executions === 0) {
+      this.isReady();
+      this.hasFinished();
+      return;
+    }
+
+    const infinityTask = executions === -1;
+    let executionsLeft = executions;
+
+    const task = infinityTask
+      ? this.task
+      : () => {
+          this.task();
+          executionsLeft--;
+          if (executionsLeft <= 0) {
+            this.stop();
+          }
+        };
+
+    this.cronJob = new CronJob(cronTime, task, this.hasFinished.bind(this));
+    this.isReady();
     this.cronJob.start();
+  }
+
+  private isReady() {
+    if (this.onReady) {
+      this.onReady(this.id);
+    }
+  }
+
+  private hasFinished() {
+    if (this.onFinished) {
+      this.onFinished(this.id);
+    }
   }
 }
 

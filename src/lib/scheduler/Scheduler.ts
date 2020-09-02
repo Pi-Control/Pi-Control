@@ -24,20 +24,24 @@ export default class Scheduler {
   public static call(task: () => void): ScheduledTask {
     Scheduler.instance().idState += 1;
 
+    const onReady = () => {
+      Scheduler.instance().activeSchedulers.push(scheduledTask);
+      logger(`Registered new task with id ${Scheduler.instance().idState}.`);
+    };
+
+    const onFinished = (id: number) => {
+      logger(`Task with id ${id} finished.`);
+      const taskIndex = Scheduler.instance().activeSchedulers.findIndex(
+        (t) => t.id === id,
+      );
+      Scheduler.instance().activeSchedulers.slice(taskIndex, 1);
+    };
+
     const scheduledTask = new ScheduledTask(
       Scheduler.instance().idState,
       task,
-      () => {
-        Scheduler.instance().activeSchedulers.push(scheduledTask);
-        logger(`Registered new task with id ${Scheduler.instance().idState}.`);
-      },
-      (id) => {
-        logger(`Task with id ${id} finished.`);
-        const taskIndex = Scheduler.instance().activeSchedulers.findIndex(
-          (t) => t.id === id,
-        );
-        Scheduler.instance().activeSchedulers.slice(taskIndex, 1);
-      },
+      onReady,
+      onFinished,
     );
 
     return scheduledTask;
