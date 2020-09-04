@@ -34,7 +34,9 @@ export default class Scheduler {
       const taskIndex = Scheduler.instance().activeSchedulers.findIndex(
         (t) => t.id === id,
       );
-      Scheduler.instance().activeSchedulers.slice(taskIndex, 1);
+      if (taskIndex >= 0) {
+        Scheduler.instance().activeSchedulers.slice(taskIndex, 1);
+      }
     };
 
     const scheduledTask = new ScheduledTask(
