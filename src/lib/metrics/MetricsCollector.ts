@@ -10,6 +10,8 @@ type Collection = { value: number; unit: string };
 // TODO: Add specific intervals(every 5s).
 
 class MetricsCollector<T> {
+  private schedulerId?: number;
+
   private type: string;
   private collector: () => Promise<T>;
   private scrapeInterval: string;
@@ -31,7 +33,7 @@ class MetricsCollector<T> {
   }
 
   public start(): void {
-    Scheduler.call(() => {
+    this.schedulerId = Scheduler.call(() => {
       this.collector().then((data) => {
         const formattedData = this.transformer(data);
 
@@ -45,6 +47,12 @@ class MetricsCollector<T> {
         });
       });
     }).every(this.scrapeInterval);
+  }
+
+  public stop(): void {
+    if (this.schedulerId) {
+      Scheduler.stop(this.schedulerId);
+    }
   }
 }
 
