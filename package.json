@@ -31,7 +31,7 @@
     "merge-graphql-schemas": "^1.7.6",
     "moment": "^2.24.0",
     "sqlite3": "^5.0.0",
-    "systeminformation": "^4.22.5",
+    "systeminformation": "^5.3.1",
     "typeorm": "^0.2.25"
   },
   "devDependencies": {
